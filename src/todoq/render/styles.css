@@ -1,0 +1,68 @@
+.todoq-results {
+	margin: 0 0.75em 0.75em;
+}
+
+.todoq-empty {
+	color: var(--joplin-color-faded, GrayText);
+	padding: 0.75em;
+	text-align: center;
+}
+
+.todoq-task {
+	border-bottom: 1px solid var(--joplin-divider-color, rgba(127, 127, 127, 0.35));
+	color: inherit;
+	padding: 0.6em 0.5em;
+}
+
+.todoq-task-row {
+	align-items: center;
+	display: flex;
+	gap: 0.4em;
+}
+
+.todoq-task:last-child {
+	border-bottom: none;
+}
+
+.todoq-task-overdue .todoq-task-due {
+	color: var(--joplin-color-error, #f85149);
+	font-weight: 600;
+}
+
+.todoq-task-checkbox {
+	cursor: pointer;
+	margin: 0 0.5em 0 0;
+	vertical-align: middle;
+}
+
+.todoq-task-checkbox:disabled {
+	cursor: default;
+}
+
+.todoq-task-title {
+	color: inherit;
+	font-weight: 600;
+}
+
+.todoq-task-meta {
+	color: inherit;
+	margin-left: 1.5em;
+	margin-top: 0.15em;
+}
+
+.todoq-open-task {
+	cursor: pointer;
+}
+
+.todoq-open-task:hover {
+	color: var(--joplin-url-color, LinkText);
+	text-decoration: underline;
+}
+
+.todoq-task-error {
+	color: var(--joplin-color-error, #f85149);
+	font-size: 0.85em;
+	margin: 0.25em 0 0 1.5em;
+}
+
+

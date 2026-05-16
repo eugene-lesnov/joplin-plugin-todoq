@@ -1,0 +1,22 @@
+{
+	"compilerOptions": {
+		"outDir": "./dist/",
+		"module": "commonjs",
+		"target": "es2015",
+		"lib": ["es2017", "dom"],
+		"jsx": "react",
+		"allowJs": true,
+		"baseUrl": ".",
+		"paths": {
+			"api": ["api/index.ts"],
+			"api/*": ["api/*"]
+		},
+		"strict": true,
+		"noImplicitAny": true,
+		"strictNullChecks": true,
+		"noFallthroughCasesInSwitch": true,
+		"noImplicitReturns": true,
+		"skipLibCheck": true
+	},
+	"include": ["src/**/*"]
+}

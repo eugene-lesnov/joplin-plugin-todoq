@@ -1,0 +1,9 @@
+export const MARKDOWN_BLOCK_LANGUAGE = 'todoq';
+export const REFRESH_QUERIES_COMMAND = 'todoq.refreshQueries';
+export const REFRESH_QUERIES_MENU_ITEM_ID = 'todoq.refreshQueries.menuItem';
+export const TODOQ_MARKDOWN_IT_CONTENT_SCRIPT_ID = 'todoq.markdownIt';
+export const TODOQ_MARKDOWN_IT_CONTENT_SCRIPT_PATH = './markdownIt/todoqMarkdownItPlugin.js';
+export const TODOQ_OPEN_TASK_MESSAGE_TYPE = 'todoq.openTask';
+export const TODOQ_MARK_DONE_MESSAGE_TYPE = 'todoq.markDone';
+export const TODOQ_RUN_QUERY_MESSAGE_TYPE = 'todoq.runQuery';
+export const JOPLIN_OPEN_NOTE_COMMAND = 'openNote';

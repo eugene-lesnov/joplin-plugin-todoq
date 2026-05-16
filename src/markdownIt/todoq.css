@@ -1,0 +1,101 @@
+.todoq-block {
+	border: 1px solid var(--joplin-divider-color, rgba(127, 127, 127, 0.35));
+	border-radius: 8px;
+	background: transparent;
+	color: inherit;
+	color-scheme: light dark;
+	margin: 1em 0;
+	overflow: hidden;
+}
+
+.todoq-header,
+.todoq-task,
+.todoq-task-title {
+	color: inherit;
+}
+
+.todoq-block-error {
+	border-color: rgba(207, 34, 46, 0.55);
+}
+
+.todoq-block .todoq-header {
+	background: var(--joplin-background-color-hover3, rgba(127, 127, 127, 0.12));
+	border-bottom: 1px solid var(--joplin-divider-color, rgba(127, 127, 127, 0.35));
+	font-weight: 600;
+	padding: 0.5em 0.75em;
+}
+
+.todoq-block-error .todoq-header {
+	background: rgba(207, 34, 46, 0.08);
+	border-bottom-color: rgba(207, 34, 46, 0.35);
+}
+
+.todoq-query {
+	background: var(--joplin-code-background-color, rgba(127, 127, 127, 0.12));
+	border-radius: 6px;
+	color: inherit;
+	font-size: 0.9em;
+	margin: 0.75em;
+	padding: 0.75em;
+	white-space: pre-wrap;
+}
+
+.todoq-summary {
+	display: grid;
+	gap: 0.5em;
+	margin: 0 0.75em 0.75em;
+}
+
+.todoq-summary div {
+	display: flex;
+	gap: 0.5em;
+}
+
+.todoq-summary span {
+	color: var(--joplin-color-faded, GrayText);
+	min-width: 4.5em;
+}
+
+.todoq-errors {
+	background: rgba(207, 34, 46, 0.08);
+	border: 1px solid rgba(207, 34, 46, 0.35);
+	border-radius: 6px;
+	color: var(--joplin-color-error, #cf222e);
+	margin: 0 0.75em 0.75em;
+	padding: 0.75em;
+}
+
+.todoq-errors-title {
+	font-weight: 600;
+	margin-bottom: 0.35em;
+}
+
+.todoq-error-list {
+	margin: 0;
+	padding-left: 1.25em;
+}
+
+.todoq-debug {
+	color: var(--joplin-color-faded, GrayText);
+	margin: 0 0.75em 0.75em;
+}
+
+.todoq-debug summary {
+	cursor: pointer;
+	font-size: 0.9em;
+}
+
+.todoq-debug pre {
+	background: var(--joplin-code-background-color, rgba(127, 127, 127, 0.12));
+	color: inherit;
+	border-radius: 6px;
+	font-size: 0.85em;
+	margin: 0.5em 0 0;
+	padding: 0.75em;
+	white-space: pre-wrap;
+}
+
+.todoq-placeholder {
+	color: var(--joplin-color-faded, GrayText);
+	padding: 0 0.75em 0.75em;
+}
