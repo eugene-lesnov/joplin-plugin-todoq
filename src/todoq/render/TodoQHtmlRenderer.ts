@@ -110,8 +110,13 @@ function renderBody(viewModels: TaskViewModel[], view: TodoQView): string {
 export function renderTodoQResults(input: TodoQRenderInput): string {
 	const now = input.now || new Date();
 	const viewModels = input.tasks.map(task => toViewModel(task, now));
-	const headerText = input.title && input.title.trim() ? input.title : strings.headerLabel;
-	const header = `<div class="todoq-header">${escapeHtml(headerText)}</div>`;
+	const header = renderHeader(input.title);
 
 	return `${header}${renderBody(viewModels, input.view)}`;
+}
+
+function renderHeader(title: string | undefined): string {
+	if (title === '') return '';
+	const headerText = title ?? strings.headerLabel;
+	return `<div class="todoq-header">${escapeHtml(headerText)}</div>`;
 }

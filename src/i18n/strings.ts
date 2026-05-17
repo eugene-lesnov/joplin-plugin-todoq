@@ -62,8 +62,6 @@ export interface AppLocalization {
 	// Parser: search
 	parserSearchTextEmpty: string;
 
-	// Parser: title
-	parserTitleEmpty: string;
 
 	// Parser: sort
 	parserSortSyntax: string;
@@ -164,8 +162,6 @@ const defaultStrings: AppLocalization = {
 
 	parserSearchTextEmpty: 'Search text cannot be empty.',
 
-	parserTitleEmpty: 'Title cannot be empty.',
-
 	parserSortSyntax: 'Expected sort <field> <direction>, for example: sort due asc.',
 	parserInvalidSortField: 'Invalid sort field "{{value}}". Expected: due, title, created, updated.',
 	parserInvalidSortDirection: 'Invalid sort direction "{{value}}". Expected: asc, desc.',
@@ -256,8 +252,6 @@ const localizations: Record<string, Partial<AppLocalization>> = {
 		parserNotebookNameEmpty: 'Название блокнота не может быть пустым.',
 
 		parserSearchTextEmpty: 'Текст поиска не может быть пустым.',
-
-		parserTitleEmpty: 'Заголовок не может быть пустым.',
 
 		parserSortSyntax: 'Ожидался формат: sort <поле> <направление>, например: sort due asc.',
 		parserInvalidSortField: 'Недопустимое поле сортировки "{{value}}". Допустимые: due, title, created, updated.',
