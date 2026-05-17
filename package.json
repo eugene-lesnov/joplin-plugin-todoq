@@ -1,11 +1,14 @@
 {
   "name": "joplin-plugin-todoq",
   "version": "1.0.0",
+  "description": "Inline to-do queries for Joplin",
+  "author": "Eugene Lesnov",
   "scripts": {
     "dist": "webpack --env joplin-plugin-config=buildMain && webpack --env joplin-plugin-config=buildExtraScripts && webpack --env joplin-plugin-config=createArchive",
     "prepare": "npm run dist",
     "updateVersion": "webpack --env joplin-plugin-config=updateVersion",
-    "update": "npm install -g generator-joplin && yo joplin --node-package-manager npm --update --force"
+    "update": "npm install -g generator-joplin && yo joplin --node-package-manager npm --update --force",
+    "version": "node scripts/sync-manifest-version.js && git add src/manifest.json"
   },
   "license": "MIT",
   "keywords": [
@@ -14,6 +17,10 @@
   "files": [
     "publish"
   ],
+  "homepage": "https://github.com/eugene-lesnov/joplin-plugin-todoq",
+  "repository": {
+    "url": "https://github.com/eugene-lesnov/joplin-plugin-todoq"
+  },
   "devDependencies": {
     "@types/node": "^18.7.13",
     "chalk": "^4.1.0",
