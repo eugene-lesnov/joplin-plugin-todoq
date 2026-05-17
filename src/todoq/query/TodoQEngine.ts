@@ -8,10 +8,10 @@ import type {
 } from '../../types';
 import type { TodoQTask } from '../model/TodoQTask';
 import {
-	addDays,
+	dayBoundsFor,
 	isOverdue,
-	isWithinCurrentWeek,
 	isWithinDay,
+	resolveDateExpression,
 } from './dateUtils';
 import { limitTasks } from './limitTasks';
 import {
@@ -40,26 +40,27 @@ function matchesDue(task: TodoQTask, due: DueFilter, now: Date): boolean {
 	}
 
 	if (due.type === 'on') {
-		const anchor = due.date.anchor;
-		if (anchor.type === 'today') return isWithinDay(task.due, now);
-		if (anchor.type === 'tomorrow') return isWithinDay(task.due, addDays(now, 1));
-		if (anchor.type === 'yesterday') return isWithinDay(task.due, addDays(now, -1));
-		return false;
+		return isWithinDay(task.due, resolveDateExpression(due.date, now));
 	}
 
-	if (due.type === 'range') {
-		const isWeekAlias = due.includeStart && due.includeEnd
-			&& due.start.anchor.type === 'today' && !due.start.offset
-			&& due.end.anchor.type === 'today'
-			&& due.end.offset?.direction === 'plus'
-			&& due.end.offset.amount === 7
-			&& due.end.offset.unit === 'day';
-
-		if (isWeekAlias) return isWithinCurrentWeek(task.due, now);
+	if (due.type === 'before') {
+		return task.due < dayBoundsFor(resolveDateExpression(due.date, now)).startOfDay;
 	}
 
-	// before/after/range with arbitrary date expressions are not implemented in MVP engine.
-	return true;
+	if (due.type === 'after') {
+		return task.due >= dayBoundsFor(resolveDateExpression(due.date, now)).startOfNextDay;
+	}
+
+	const startDay = resolveDateExpression(due.start, now);
+	const endDay = resolveDateExpression(due.end, now);
+	const lowerBound = due.includeStart
+		? dayBoundsFor(startDay).startOfDay
+		: dayBoundsFor(startDay).startOfNextDay;
+	const upperBoundExclusive = due.includeEnd
+		? dayBoundsFor(endDay).startOfNextDay
+		: dayBoundsFor(endDay).startOfDay;
+
+	return task.due >= lowerBound && task.due < upperBoundExclusive;
 }
 
 function matchesNotebook(task: TodoQTask, notebook?: NotebookFilter): boolean {

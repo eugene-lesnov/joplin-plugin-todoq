@@ -1,5 +1,7 @@
+import type { DateAnchor, DateExpression } from '../../types';
+
 const MILLIS_PER_DAY = 24 * 60 * 60 * 1000;
-const WEEK_DAYS = 7;
+const DAYS_PER_WEEK = 7;
 
 export interface DayBounds {
 	startOfDay: number;
@@ -29,16 +31,27 @@ export function isWithinDay(timestamp: number, day: Date): boolean {
 	return timestamp >= bounds.startOfDay && timestamp < bounds.startOfNextDay;
 }
 
-export function isWithinNextDays(timestamp: number, startDay: Date, daysCount: number): boolean {
-	const start = startOfLocalDay(startDay).getTime();
-	const endExclusive = start + daysCount * MILLIS_PER_DAY;
-	return timestamp >= start && timestamp < endExclusive;
-}
-
-export function isWithinCurrentWeek(timestamp: number, today: Date = new Date()): boolean {
-	return isWithinNextDays(timestamp, today, WEEK_DAYS);
-}
-
 export function isOverdue(timestamp: number, today: Date = new Date()): boolean {
 	return timestamp < startOfLocalDay(today).getTime();
+}
+
+function anchorToLocalDay(anchor: DateAnchor, now: Date): Date {
+	switch (anchor.type) {
+		case 'today': return startOfLocalDay(now);
+		case 'tomorrow': return addDays(startOfLocalDay(now), 1);
+		case 'yesterday': return addDays(startOfLocalDay(now), -1);
+		case 'date': {
+			const [year, month, day] = anchor.value.split('-').map(Number);
+			return new Date(year, month - 1, day);
+		}
+	}
+}
+
+export function resolveDateExpression(expr: DateExpression, now: Date = new Date()): Date {
+	const base = anchorToLocalDay(expr.anchor, now);
+	if (!expr.offset) return base;
+
+	const unitInDays = expr.offset.unit === 'week' ? DAYS_PER_WEEK : 1;
+	const signedDays = (expr.offset.direction === 'plus' ? 1 : -1) * expr.offset.amount * unitInDays;
+	return addDays(base, signedDays);
 }
