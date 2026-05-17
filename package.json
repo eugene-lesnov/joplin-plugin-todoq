@@ -1,6 +1,6 @@
 {
   "name": "joplin-plugin-todoq",
-  "version": "1.0.0",
+  "version": "0.2.0",
   "description": "Inline to-do queries for Joplin",
   "author": "Eugene Lesnov",
   "scripts": {
