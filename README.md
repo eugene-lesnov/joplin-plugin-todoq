@@ -112,13 +112,13 @@ Comparison granularity is **per day** (local time zone). `before`/`after` exclud
 #### `<date-expr>` — date expression
 
 ```
-<anchor> [ +N<unit> | -N<unit> ]
+<anchor>[<offset>]
 ```
 
 - **Anchors:** `today`, `tomorrow`, `yesterday`, or a literal date **in the format from settings** (default `YYYY-MM-DD`).
-- **Offset (optional):**
+- **Offset (optional):** `<sign><amount><unit>` with arbitrary whitespace between parts.
   - Sign: `+` or `-`
-  - `N` — a positive integer
+  - Amount: a positive integer
   - Units: `d`/`day`/`days`, `w`/`week`/`weeks`
 
 Examples (assuming the default `YYYY-MM-DD` format):
@@ -126,10 +126,12 @@ Examples (assuming the default `YYYY-MM-DD` format):
 ```
 today
 today + 3d
+today-1d
 2026-05-20
 2026-05-20 - 1w
+2026-05-20-1w
 tomorrow + 2 weeks
-yesterday - 3d
+yesterday-3d
 ```
 
 If the configured date format is, for example, `DD.MM.YYYY`, you write `01.05.2026` instead of `2026-05-01`.

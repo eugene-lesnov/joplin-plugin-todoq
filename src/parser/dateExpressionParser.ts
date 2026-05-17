@@ -8,7 +8,7 @@ import type {
 } from '../types';
 import { CommandParseResult, failed, parsed } from './parserTypes';
 
-const DATE_EXPRESSION_PATTERN = /^(\S+)(?:\s*([+-])\s*(\d+)\s*([A-Za-z]+))?$/;
+const OFFSET_SUFFIX_PATTERN = /\s*([+-])\s*(\d+)\s*([A-Za-z]+)$/;
 
 interface CompiledDateFormat {
 	regex: RegExp;
@@ -160,27 +160,29 @@ export function parseDateExpression(input: string): CommandParseResult<DateExpre
 	}
 
 	const { format, compiled } = getActiveDateFormat();
-	const match = value.match(DATE_EXPRESSION_PATTERN);
+	const offsetMatch = value.match(OFFSET_SUFFIX_PATTERN);
+	const hasOffset = offsetMatch && offsetMatch.index !== undefined && offsetMatch.index > 0;
 
-	if (!match) {
+	const anchorPart = hasOffset ? value.slice(0, offsetMatch!.index).trimEnd() : value;
+
+	if (!anchorPart) {
 		return failed(formatLocalizedString(strings.parserInvalidDateExpression, { value: input, format }));
 	}
 
-	const anchorResult = parseDateAnchor(match[1], format, compiled);
+	const anchorResult = parseDateAnchor(anchorPart, format, compiled);
 	if (!anchorResult.ok) return failed(anchorResult.message);
 
-	const operator = match[2];
-	if (!operator) {
+	if (!hasOffset) {
 		return parsed({ anchor: anchorResult.value });
 	}
 
-	const amountResult = parseDateOffsetAmount(match[3]);
+	const amountResult = parseDateOffsetAmount(offsetMatch![2]);
 	if (!amountResult.ok) return failed(amountResult.message);
 
-	const unitResult = parseDateOffsetUnit(match[4]);
+	const unitResult = parseDateOffsetUnit(offsetMatch![3]);
 	if (!unitResult.ok) return failed(unitResult.message);
 
-	const direction: DateOffsetDirection = operator === '+' ? 'plus' : 'minus';
+	const direction: DateOffsetDirection = offsetMatch![1] === '+' ? 'plus' : 'minus';
 
 	return parsed({
 		anchor: anchorResult.value,
