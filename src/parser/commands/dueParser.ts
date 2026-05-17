@@ -9,9 +9,6 @@ const DUE_OVERDUE = 'overdue';
 const DUE_BEFORE = 'before';
 const DUE_AFTER = 'after';
 const DUE_RANGE = 'range';
-const DUE_TODAY = 'today';
-const DUE_TOMORROW = 'tomorrow';
-const DUE_YESTERDAY = 'yesterday';
 const DUE_WEEK = 'week';
 const RANGE_SEPARATOR = ',';
 const RANGE_START_INCLUSIVE = '[';
@@ -19,7 +16,6 @@ const RANGE_START_EXCLUSIVE = '(';
 const RANGE_END_INCLUSIVE = ']';
 const RANGE_END_EXCLUSIVE = ')';
 const WEEK_ALIAS_DAYS = 7;
-const DIRECT_DATE_PATTERN = /^\d{4}-\d{2}-\d{2}$/;
 
 function todayDateExpression(): DateExpression {
 	return { anchor: { type: 'today' } };
@@ -43,22 +39,16 @@ function parseDateFilter(type: 'on' | 'before' | 'after', dateInput: string): Co
 	return parsed({ type, date: dateResult.value });
 }
 
-function parseShortAlias(value: string): CommandParseResult<DueFilter> | undefined {
-	if (value === DUE_TODAY || value === DUE_TOMORROW || value === DUE_YESTERDAY) {
-		return parseDateFilter('on', value);
-	}
+function parseWeekAlias(value: string): CommandParseResult<DueFilter> | undefined {
+	if (value !== DUE_WEEK) return undefined;
 
-	if (value === DUE_WEEK) {
-		return parsed({
-			type: 'range',
-			start: todayDateExpression(),
-			end: weekAliasEndDateExpression(),
-			includeStart: true,
-			includeEnd: true,
-		});
-	}
-
-	return undefined;
+	return parsed({
+		type: 'range',
+		start: todayDateExpression(),
+		end: weekAliasEndDateExpression(),
+		includeStart: true,
+		includeEnd: true,
+	});
 }
 
 function getRangeBoundaryFlags(rangeInput: string): CommandParseResult<{ includeStart: boolean; includeEnd: boolean }> {
@@ -142,17 +132,12 @@ function splitFirstWord(value: string): { word: string; rest: string } {
 }
 
 function parseImplicitDateFilter(value: string): CommandParseResult<DueFilter> {
-	const firstPart = splitFirstWord(value);
-	const firstWord = firstPart.word;
-
-	if (firstWord === DUE_TODAY
-		|| firstWord === DUE_TOMORROW
-		|| firstWord === DUE_YESTERDAY
-		|| DIRECT_DATE_PATTERN.test(firstWord)) {
-		return parseDateFilter('on', value);
+	const dateResult = parseDateExpression(value);
+	if (!dateResult.ok) {
+		return failed(formatLocalizedString(strings.parserInvalidDueValue, { value }));
 	}
 
-	return failed(formatLocalizedString(strings.parserInvalidDueValue, { value }));
+	return parsed({ type: 'on', date: dateResult.value });
 }
 
 export function parseDueCommand(args: string): CommandParseResult<DueFilter> {
@@ -166,8 +151,8 @@ export function parseDueCommand(args: string): CommandParseResult<DueFilter> {
 	if (value === DUE_NONE) return parsed({ type: 'none' });
 	if (value === DUE_OVERDUE) return parsed({ type: 'overdue' });
 
-	const shortAliasResult = parseShortAlias(value);
-	if (shortAliasResult) return shortAliasResult;
+	const weekAliasResult = parseWeekAlias(value);
+	if (weekAliasResult) return weekAliasResult;
 
 	const firstPart = splitFirstWord(value);
 
