@@ -1,4 +1,4 @@
-# TodoQ — Joplin Plugin
+# TodoQ
 
 Inline task queries right inside your Joplin notes.
 
@@ -47,7 +47,7 @@ This setting affects only how you **write** dates in the DSL. Internally dates a
 
 ---
 
-# DSL — Specification
+# DSL
 
 ## General Rules
 
