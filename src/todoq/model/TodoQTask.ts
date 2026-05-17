@@ -1,7 +1,6 @@
 export interface TodoQTask {
 	id: string;
 	title: string;
-	body?: string;
 	notebookId: string;
 	notebookTitle?: string;
 	notebookPath?: string;

@@ -3,7 +3,6 @@ import type { TodoQTask } from '../model/TodoQTask';
 export interface JoplinNoteRaw {
 	id: string;
 	title?: string;
-	body?: string;
 	parent_id?: string;
 	is_todo?: number;
 	todo_due?: number;
@@ -47,7 +46,6 @@ export function mapJoplinNoteToTodoQTask(
 	return {
 		id: note.id,
 		title: note.title || '',
-		body: note.body,
 		notebookId,
 		notebookTitle: folders.getTitle(notebookId),
 		notebookPath: folders.getPath(notebookId),

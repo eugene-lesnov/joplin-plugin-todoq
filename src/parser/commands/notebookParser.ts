@@ -2,16 +2,9 @@ import strings from '../../i18n/strings';
 import type { NotebookFilter } from '../../types';
 import { parseQuotedOrSingleWord } from '../stringParser';
 import { CommandParseResult, failed, parsed } from '../parserTypes';
+import { splitFirstWord } from '../parserUtils';
 
 const UNDER_KEYWORD = 'under';
-
-function splitFirstWord(value: string): { word: string; rest: string } {
-	const match = value.match(/^(\S+)(?:\s+(.*))?$/);
-	return {
-		word: match ? match[1] : '',
-		rest: match && match[2] ? match[2].trim() : '',
-	};
-}
 
 export function parseNotebookCommand(args: string): CommandParseResult<NotebookFilter> {
 	const value = args.trim();

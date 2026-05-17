@@ -2,6 +2,7 @@ import strings, { formatLocalizedString } from '../../i18n/strings';
 import type { DateExpression, DueFilter } from '../../types';
 import { parseDateExpression } from '../dateExpressionParser';
 import { CommandParseResult, failed, parsed } from '../parserTypes';
+import { splitFirstWord } from '../parserUtils';
 
 const DUE_ANY = 'any';
 const DUE_NONE = 'none';
@@ -121,14 +122,6 @@ function parseRangeFilter(rangeInput: string): CommandParseResult<DueFilter> {
 		includeStart: boundaryResult.value.includeStart,
 		includeEnd: boundaryResult.value.includeEnd,
 	});
-}
-
-function splitFirstWord(value: string): { word: string; rest: string } {
-	const match = value.match(/^(\S+)(?:\s+(.*))?$/);
-	return {
-		word: match ? match[1] : '',
-		rest: match && match[2] ? match[2].trim() : '',
-	};
 }
 
 function parseImplicitDateFilter(value: string): CommandParseResult<DueFilter> {

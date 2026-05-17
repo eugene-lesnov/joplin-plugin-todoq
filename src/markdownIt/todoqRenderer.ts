@@ -1,9 +1,8 @@
 import { MARKDOWN_BLOCK_LANGUAGE } from '../constants';
 import strings from '../i18n/strings';
-import type { TodoQQueryBlock } from '../types';
 
 const FENCE_MARKER = '```';
-const NEWLINE = '\n';
+const SOURCE_OPEN = `${FENCE_MARKER}${MARKDOWN_BLOCK_LANGUAGE}\n`;
 
 export interface MarkdownItFenceToken {
 	content?: string;
@@ -23,26 +22,14 @@ function getFenceLanguage(info: string = ''): string {
 	return info.trim().split(/\s+/, 1)[0] || '';
 }
 
-function buildSourceOpen(): string {
-	return `${FENCE_MARKER}${MARKDOWN_BLOCK_LANGUAGE}${NEWLINE}`;
-}
-
-function createQueryBlock(token: MarkdownItFenceToken): TodoQQueryBlock {
-	return {
-		language: MARKDOWN_BLOCK_LANGUAGE,
-		content: token.content || '',
-	};
-}
-
 export function isTodoQFence(token: MarkdownItFenceToken): boolean {
 	return getFenceLanguage(token.info) === MARKDOWN_BLOCK_LANGUAGE;
 }
 
 export function renderTodoQBlock(token: MarkdownItFenceToken): string {
-	const block = createQueryBlock(token);
-	const queryText = block.content;
-	const escapedSource = escapeHtml(block.content);
-	const escapedSourceOpen = escapeHtml(buildSourceOpen());
+	const queryText = token.content || '';
+	const escapedSource = escapeHtml(queryText);
+	const escapedSourceOpen = escapeHtml(SOURCE_OPEN);
 	const escapedSourceClose = escapeHtml(FENCE_MARKER);
 	// Pass the raw query text to the client via a URI-encoded data attribute.
 	// The client decodes it and asks the main plugin process to execute the query.

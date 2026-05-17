@@ -1,17 +1,10 @@
 import strings, { formatLocalizedString } from '../../i18n/strings';
 import type { TagFilter, TagMatchMode } from '../../types';
 import { CommandParseResult, failed, parsed } from '../parserTypes';
+import { splitFirstWord } from '../parserUtils';
 
 const ANY_MODE = 'any';
 const ALL_MODE = 'all';
-
-function splitFirstWord(value: string): { word: string; rest: string } {
-	const match = value.match(/^(\S+)(?:\s+(.*))?$/);
-	return {
-		word: match ? match[1] : '',
-		rest: match && match[2] ? match[2].trim() : '',
-	};
-}
 
 function parseTags(value: string): CommandParseResult<string[]> {
 	if (!value.trim()) {

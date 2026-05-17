@@ -1,6 +1,7 @@
 import joplin from 'api';
 
 import type { TodoQTask } from '../model/TodoQTask';
+import { NOTEBOOK_PATH_SEPARATOR } from '../query/notebookUtils';
 import {
 	FolderLookup,
 	JoplinFolderRaw,
@@ -14,7 +15,6 @@ const TODO_SEARCH_QUERY = 'type:todo';
 const NOTE_FIELDS = [
 	'id',
 	'title',
-	'body',
 	'parent_id',
 	'is_todo',
 	'todo_due',
@@ -24,7 +24,6 @@ const NOTE_FIELDS = [
 ];
 const FOLDER_FIELDS = ['id', 'title', 'parent_id'];
 const TAG_FIELDS = ['id', 'title'];
-const NOTEBOOK_PATH_SEPARATOR = ' / ';
 
 interface PagedResponse<T> {
 	items: T[];
