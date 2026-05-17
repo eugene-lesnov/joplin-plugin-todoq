@@ -1,4 +1,4 @@
-# TodoQ
+# TodoQ — Joplin Plugin
 
 Inline task queries right inside your Joplin notes.
 
@@ -14,6 +14,7 @@ TodoQ turns a fenced ```` ```todoq ```` block into a live widget: it parses a sm
 - Open a task by clicking on its title
 - Mark as "done" by clicking on the native markdown checkbox
 - Automatic preview update on changes
+- Configurable date format for literal dates inside queries
 
 ## Usage
 
@@ -29,6 +30,20 @@ view list
 ````
 
 The plugin will execute the query and render the result directly below the code.
+
+---
+
+# Settings
+
+Available under **Settings → TodoQ**:
+
+| Setting                       | Default      | Description                                                                                                       |
+|-------------------------------|--------------|-------------------------------------------------------------------------------------------------------------------|
+| Date format for `<date-expr>` | `YYYY-MM-DD` | Format used to parse literal dates inside TodoQ queries. Supported tokens: `YYYY`, `YY`, `MM`, `M`, `DD`, `D`.    |
+
+Examples of the date format setting: `YYYY-MM-DD`, `DD.MM.YYYY`, `D/M/YY`.
+
+This setting affects only how you **write** dates in the DSL. Internally dates are normalized and compared in a stable way.
 
 ---
 
@@ -79,7 +94,7 @@ due overdue                      # overdue (open + due < today)
 due week                         # next 7 days: range [today, today + 7d]
 due <date-expr>                  # exact match
 due before <date-expr>           # strictly before
-due after  <date-expr>           # strictly after
+due after  <date-expr>           # strictly after (after the whole day)
 due range  <interval>            # arbitrary range with bounds
 ```
 
@@ -89,8 +104,10 @@ Short aliases (equivalent to a pointwise `due <date-expr>`):
 due today
 due tomorrow
 due yesterday
-due 2026-05-20
+due 2026-05-20            # literal date in the configured format
 ```
+
+Comparison granularity is **per day** (local time zone). `before`/`after` exclude the whole referenced day; inclusive range bounds include the whole day.
 
 #### `<date-expr>` — date expression
 
@@ -98,13 +115,13 @@ due 2026-05-20
 <anchor> [ +N<unit> | -N<unit> ]
 ```
 
-- **Anchors:** `today`, `tomorrow`, `yesterday`, `YYYY-MM-DD`
+- **Anchors:** `today`, `tomorrow`, `yesterday`, or a literal date **in the format from settings** (default `YYYY-MM-DD`).
 - **Offset (optional):**
   - Sign: `+` or `-`
   - `N` — a positive integer
   - Units: `d`/`day`/`days`, `w`/`week`/`weeks`
 
-Examples:
+Examples (assuming the default `YYYY-MM-DD` format):
 
 ```
 today
@@ -114,6 +131,8 @@ today + 3d
 tomorrow + 2 weeks
 yesterday - 3d
 ```
+
+If the configured date format is, for example, `DD.MM.YYYY`, you write `01.05.2026` instead of `2026-05-01`.
 
 #### `<interval>` — range for `range`
 
@@ -125,6 +144,8 @@ yesterday - 3d
 ```
 
 There must be exactly one comma inside; both parts are required.
+
+Inclusive bound includes the whole day of the bound date; exclusive bound excludes it.
 
 Examples:
 
@@ -208,7 +229,7 @@ Tags must not contain spaces and are separated by commas.
 search "<text>"
 ```
 
-The text **must** be in double quotes (escapes `\"` and `\\` are supported).
+The text **must** be in double quotes (escapes `\"` and `\\` are supported). Empty text is not allowed.
 
 ### `title` — custom block title
 
@@ -216,13 +237,19 @@ The text **must** be in double quotes (escapes `\"` and `\\` are supported).
 title "<title>"
 ```
 
-Replaces the default `TodoQ` title above the list. The text **must** be in double quotes (escapes `\"` and `\\` are supported).
+The text **must** be in double quotes (escapes `\"` and `\\` are supported).
+
+Behavior:
+- Directive not specified → default header `TodoQ` is shown.
+- `title "Some text"` → that text is shown as the header.
+- `title ""` → the header is **hidden** completely.
 
 Examples:
 
 ```
 title "My tasks for the week"
 title "Overdue"
+title ""
 ```
 
 ---
@@ -268,9 +295,10 @@ due yesterday
 status open
 ```
 
-**Compact output — only due date and tags:**
+**Compact output — only due date and tags, no header:**
 
 ```todoq
 status open
 view custom due,tags
+title ""
 ```
