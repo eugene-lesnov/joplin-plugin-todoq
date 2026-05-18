@@ -1,17 +1,17 @@
 # TodoQ
 
-Inline task queries right inside your Joplin notes.
+Inline to-do queries right inside your Joplin notes.
 
-TodoQ turns a fenced ```` ```todoq ```` block into a live widget: it parses a small DSL, searches your todo-notes in Joplin and renders them as a list in the preview. Right from the widget you can open a task (click on its title) and mark it as done (click on the checkbox).
+TodoQ turns a fenced ```` ```todoq ```` block into a live widget: it parses a small DSL, searches your to-do notes in Joplin and renders them as a list in the preview. Right from the widget you can open a to-do (click on its title) and mark it as done (click on the checkbox).
 
 ## Features
 
-- Declarative DSL for querying Joplin tasks
+- Declarative DSL for querying Joplin to-dos
 - Filters: status, due date, notebook (including sub-notebooks), tags, full-text search, limit
 - Sorting by due / title / created / updated
 - Display modes: `list` (all fields) and `custom` (custom set of fields)
-- Full notebook path in the task meta
-- Open a task by clicking on its title
+- Full notebook path in the to-do meta
+- Open a to-do by clicking on its title
 - Mark as "done" by clicking on the native markdown checkbox
 - Automatic preview update on changes
 - Configurable date format for literal dates inside queries
@@ -81,7 +81,7 @@ This setting affects only how you **write** dates in the DSL. Internally dates a
 status <open | done | all>
 ```
 
-- `open` — only unfinished tasks (default)
+- `open` — only unfinished to-dos (default)
 - `done` — only completed
 - `all` — all of them
 
@@ -249,7 +249,7 @@ Behavior:
 Examples:
 
 ```
-title "My tasks for the week"
+title "My to-dos for the week"
 title "Overdue"
 title ""
 ```
@@ -258,7 +258,7 @@ title ""
 
 ## Examples
 
-**Overdue work tasks:**
+**Overdue work to-dos:**
 
 ```todoq
 status open
@@ -267,7 +267,7 @@ tag all work
 sort due asc
 ```
 
-**Top 10 tasks for the next 3 days:**
+**Top 10 to-dos for the next 3 days:**
 
 ```todoq
 due range [today, today + 3d]
@@ -282,7 +282,7 @@ notebook under "Personal"
 status open
 ```
 
-**Tasks without a due date, by tags:**
+**To-dos without a due date, by tags:**
 
 ```todoq
 due none
